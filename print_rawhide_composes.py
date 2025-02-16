@@ -63,6 +63,12 @@ def number_of_updates_since_date(args_days):
     return
 
 
+def calculate_diff(old_date, new_date, update_no):
+
+    print(old_date, new_date, update_no)
+
+    return
+
 def main():
     parser = argparse.ArgumentParser(description="Calculate the date X days before today.")
 
@@ -75,6 +81,12 @@ def main():
     add_parser = subparsers.add_parser('calc', help='Calculate date X days before today')
     add_parser.add_argument('days', type=int, help='Number of days to find the date')
     add_parser.set_defaults(func=lambda args: calculate_past_date(args.days))
+
+    add_parser = subparsers.add_parser('diff', help='Identify the differences between two composes')
+    add_parser.add_argument('--old', required=True, type=str, help='Older date to parse.')
+    add_parser.add_argument('--new', required=True, type=str, help='Newer date to parse.')
+    add_parser.add_argument('--num', required=False, default=0, type=int, help='Zero indexed number of the update on a specific date (if applicable).')
+    add_parser.set_defaults(func=lambda args: calculate_diff(args.old, args.new, args.num))
 
     args = parser.parse_args()
 
