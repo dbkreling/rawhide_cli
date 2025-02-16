@@ -65,6 +65,16 @@ def number_of_updates_since_date(args_days):
 
 def calculate_diff(old_date, new_date, update_no):
 
+    if counter.get(old_date) > 1 and update_no == 0:
+        print(f"WARNING: {old_date} contains {counter[old_date]} updates. Using default index = 0")
+        print(update_no)
+        print(counter.get(old_date))
+    elif counter.get(old_date) > 1 and update_no < counter.get(old_date):
+        print(f"WARNING: {old_date} contains {counter[old_date]} updates. Using index = {update_no}")
+        print(f"Using --num = {update_no}")
+    else:
+        print(f"ERROR: {old_date} contains {counter[old_date]} updates, please provide which one to use (use --num option in the command line)")
+
     print(old_date, new_date, update_no)
 
     return
