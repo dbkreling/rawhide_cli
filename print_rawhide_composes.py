@@ -24,8 +24,8 @@ for link in soup.find_all("a"):
         date = (href.split("-", 3)[2]).split(".")[0]
         dates.append(date)
 
-dates.pop(-1)
-counter = Counter(dates)
+dates.pop(-1) # Removes a "Rawhide/" folder at the end of the list
+counter = Counter(dates) # Create a dictionary with the counts for each date, sorted from the highest count
 
 # print(dates)
 # print()
@@ -36,6 +36,13 @@ def calculate_past_date(days):
     return
 
 def number_of_updates_since_date(args_days):
+    sliced_dict = dict(list(counter.items())[-args_days:])  # Get first 2 items
+    number_of_rawhide_updates = sum(sliced_dict.values())
+
+    print(f"In the last {args_days} we had {number_of_rawhide_updates} Rawhide updates\n")
+    print(f"Here's the list:")
+    print(sliced_dict)
+
     return
 
 def main():
