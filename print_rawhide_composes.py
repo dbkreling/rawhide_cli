@@ -5,6 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 from collections import Counter
 
+from datetime import datetime, timedelta
+
 # URL of the directory listing
 url = "https://kojipkgs.fedoraproject.org/compose/rawhide/"
 
@@ -32,8 +34,23 @@ counter = Counter(dates) # Create a dictionary with the counts for each date, so
 # print(counter)
 
 def print_all_updates():
+    print("Here's a list of Rawhide updates per day:" )
+    for key,value in counter.items():
+        if value == 1:
+            singular_plural = "update"
+        else:
+            singular_plural = "updates"
+        print(f"{value} {singular_plural} on {key}")
+
+
 def calculate_past_date(days):
+    """Calculates the date X days before today."""
+    past_date = datetime.today() - timedelta(days=days)
+    date = past_date.strftime("%Y-%m-%d")
+    print(f"The date {days} days before today is: {date}")
+
     return
+
 
 def number_of_updates_since_date(args_days):
     sliced_dict = dict(list(counter.items())[-args_days:])  # Get first 2 items
@@ -44,6 +61,7 @@ def number_of_updates_since_date(args_days):
     print(sliced_dict)
 
     return
+
 
 def main():
     parser = argparse.ArgumentParser(description="Calculate the date X days before today.")
