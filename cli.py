@@ -24,8 +24,8 @@ def main():
     parser.add_argument("-f", "--finaldate", type=str, help="The date to download the final json file." )
     args = parser.parse_args()
 
-    create_json_file(args.initdate, f"rpms_{args.initdate}.json")
-    create_json_file(args.finaldate, f"rpms_{args.finaldate}.json")
+    init_file = create_json_file(args.initdate, f"rpms_{args.initdate}.json")
+    final_file = create_json_file(args.finaldate, f"rpms_{args.finaldate}.json")
 
     try:
         with open(args.filename, "r", encoding="utf-8") as file:
