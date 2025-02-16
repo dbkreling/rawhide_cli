@@ -80,6 +80,7 @@ def calculate_diff(old_date, new_date, index):
     else:
         url = (f'https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{old_date}.n.{index}/compose/metadata/rpms.json')
         print(url)
+    index = 0 # for the initial implementation, leave it as 0. TODO: implement detailed behavior when index is != 0
 
     print(old_date, new_date, index)
 
@@ -101,7 +102,7 @@ def main():
     add_parser = subparsers.add_parser('diff', help='Identify the differences between two composes')
     add_parser.add_argument('--old', required=True, type=str, help='Older date to parse.')
     add_parser.add_argument('--new', required=True, type=str, help='Newer date to parse.')
-    add_parser.add_argument('--index', required=False, default=0, type=int, help='Zero indexed number of the update on a specific date (if applicable).')
+    add_parser.add_argument('--index', required=False, default=0, type=int, help='Zero indexed number of the update on a specific date (disabled for now).')
     add_parser.set_defaults(func=lambda args: calculate_diff(args.old, args.new, args.index))
 
     add_parser = subparsers.add_parser('all', help='Display all Rawhide updates')
