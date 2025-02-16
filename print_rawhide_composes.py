@@ -26,9 +26,13 @@ for link in soup.find_all("a"):
 dates.pop(-1)
 counter = Counter(dates)
 
-print(dates)
+# print(dates)
 
-print(counter)
-
+# print(counter)
+print("Here's a list of Rawhide updates per day:" )
 for key,value in counter.items():
-    print(f"{value} updates on {key}")
+    if value == 1:
+        singular_plural = "update"
+    else:
+        singular_plural = "updates"
+    print(f"{value} {singular_plural} on {key}")
