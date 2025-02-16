@@ -2,6 +2,7 @@
 
 import requests
 from bs4 import BeautifulSoup
+from collections import Counter
 
 # URL of the directory listing
 url = "https://kojipkgs.fedoraproject.org/compose/rawhide/"
@@ -22,7 +23,12 @@ for link in soup.find_all("a"):
         date = (href.split("-", 3)[2]).split(".")[0]
         dates.append(date)
 
+dates.pop(-1)
+counter = Counter(dates)
+
 print(dates)
 
+print(counter)
 
-        # print(href)  # Print directory/file names
+for key,value in counter.items():
+    print(f"{value} updates on {key}")
