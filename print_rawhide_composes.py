@@ -98,6 +98,9 @@ def main():
     add_parser.add_argument('--num', required=False, default=0, type=int, help='Zero indexed number of the update on a specific date (if applicable).')
     add_parser.set_defaults(func=lambda args: calculate_diff(args.old, args.new, args.num))
 
+    add_parser = subparsers.add_parser('all', help='Display all Rawhide updates')
+    add_parser.set_defaults(func=lambda args: print_all_updates())
+
     args = parser.parse_args()
 
     if hasattr(args, 'func'):
