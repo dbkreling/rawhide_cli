@@ -13,7 +13,7 @@ def main():
     try:
         with open(args.filename, "r", encoding="utf-8") as file:
             data = json.load(file)
-            print(data)
+            # print(data)
         with open("output.json", "w", encoding="utf-8") as fileo:
             json.dump(data, fileo, indent=4)
     except FileNotFoundError:
@@ -21,6 +21,7 @@ def main():
     except Exception as e:
         print(f"Error: {e}")
 
+    print(f"Output file output.json created.")
 
 if __name__ == "__main__":
     main()
