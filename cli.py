@@ -33,6 +33,12 @@ def create_packages_list(filename):
 
     return packages_list
 
+def find_common_packages(init_packages, final_packages):
+    # Convert both lists to sets and compute their intersection.
+    common_packages = list(set(init_packages) & set(final_packages))
+    return common_packages
+
+
 def main():
     parser = argparse.ArgumentParser(description="A simple CLI example.")
     parser.add_argument("-i", "--initdate", type=str, help="The date to download the initial json file." )
@@ -45,6 +51,7 @@ def main():
     init_packages = create_packages_list(init_file)
     final_packages = create_packages_list(final_file)
 
+    find_common_packages(init_packages, final_packages)
 
 if __name__ == "__main__":
     main()
