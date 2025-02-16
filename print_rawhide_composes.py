@@ -67,17 +67,19 @@ def calculate_diff(old_date, new_date, index):
 
     if counter.get(old_date) > 1 and index == 0: # if date has more than 1 update, give a warning and use 0
         print(f"WARNING: {old_date} contains {counter[old_date]} updates. Using default \'--index 0\'")
-        url = "https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{old_date}.n.{index}/compose/metadata/rpms.json"
+        url = (f'https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{old_date}.n.{index}/compose/metadata/rpms.json')
         print(url)
-        print(index)
-        print(counter.get(old_date))
     elif counter.get(old_date) > 1 and index < counter.get(old_date): # if index is higher than the numbers of update
         print(f"WARNING: {old_date} contains {counter[old_date]} updates. Using index = {index}")
-        print(f"Using --index = {index}")
+        url = (f'https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{old_date}.n.{index}/compose/metadata/rpms.json')
+        print(url)
     elif counter.get(old_date) == 1 and index != 0: # if date has only 1 update and index is higher, exit
         print(f"Using --index = {index}")
         print(f"ERROR: {old_date} contains {counter[old_date]} update. Use \'--index 0\'.")
         exit
+    else:
+        url = (f'https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{old_date}.n.{index}/compose/metadata/rpms.json')
+        print(url)
 
     print(old_date, new_date, index)
 
