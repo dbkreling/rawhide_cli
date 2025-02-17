@@ -55,10 +55,12 @@ def find_removed_packages(init_packages, final_packages):
     # Convert both lists to sets and find the difference
     result = list(set(nevra_names_init) - set(nevra_names_final))
 
-    for package_name in init_packages:
-        for substring in result:
-            if substring in package_name:
-                print(f'{substring} REMOVED ({package_name})')
+    for nevra_name in result:
+        for package_name in init_packages:
+            if nevra_name in package_name:
+                print(f'{nevra_name} REMOVED ({package_name})')
+
+    return
 
     return
 
