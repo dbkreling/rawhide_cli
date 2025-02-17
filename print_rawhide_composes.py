@@ -56,7 +56,7 @@ def number_of_updates_since_date(args_days):
     sliced_dict = dict(list(counter.items())[-args_days:])  # Get first 2 items
     number_of_rawhide_updates = sum(sliced_dict.values())
 
-    print(f"In the last {args_days} we had {number_of_rawhide_updates} Rawhide updates\n")
+    print(f"In the last {args_days} days we had {number_of_rawhide_updates} Rawhide updates\n")
     print(f"Here's the list:")
     print(sliced_dict)
 
@@ -87,12 +87,12 @@ def calculate_diff(old_date, new_date, index):
     return
 
 def main():
-    parser = argparse.ArgumentParser(description="Calculate the date X days before today.")
+    parser = argparse.ArgumentParser(description="Manipulate metadata from Fedora's Rawhide and other time operations.")
 
     subparsers = parser.add_subparsers(dest='command', help='Sub-command help')
 
     add_parser = subparsers.add_parser('last', help="Updates in the last X days")
-    add_parser.add_argument('days', type=int, help="First number")
+    add_parser.add_argument('days', type=int, help="Number of days ago to display the number of updates.")
     add_parser.set_defaults(func=lambda args: number_of_updates_since_date(args.days))
 
     add_parser = subparsers.add_parser('calc', help='Calculate date X days before today')
