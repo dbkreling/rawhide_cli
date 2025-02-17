@@ -39,6 +39,27 @@ def find_common_packages(init_packages, final_packages):
     return common_packages
 
 
+def find_removed_packages(init_packages, final_packages):
+    # Removed packages are those present only in the init_packages
+    nevra_names_init = []
+    nevra_names_final = []
+
+    for package in init_packages:
+        nevra_names_init.append(package.rsplit("-", 2)[0])
+    for package in final_packages:
+        nevra_names_final.append(package.rsplit("-", 2)[0])
+
+    # Convert both lists to sets and find the difference
+    result = list(set(nevra_names_init) - set(nevra_names_final))
+
+    for package_name in init_packages:
+        for substring in result:
+            if substring in package_name:
+                print(f'{substring} REMOVED ({package_name})')
+
+    return
+
+
 def main():
     parser = argparse.ArgumentParser(description="A simple CLI example.")
     parser.add_argument("-i", "--initdate", type=str, help="The date to download the initial json file." )
@@ -52,6 +73,7 @@ def main():
     final_packages = create_packages_list(final_file)
 
     find_common_packages(init_packages, final_packages)
+    find_removed_packages(init_packages, final_packages)
 
 if __name__ == "__main__":
     main()
