@@ -25,7 +25,7 @@ options:
 ```
 usage: cli.py [-h] [-i INITDATE] [-f FINALDATE] [-n BATCHINIT] [-m BATCHFINAL]
 
-A simple CLI example.
+A simple CLI tool.
 
 options:
   -h, --help            show this help message and exit

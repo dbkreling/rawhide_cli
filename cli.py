@@ -84,7 +84,7 @@ def find_added_packages(init_packages, final_packages):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="A simple CLI example.")
+    parser = argparse.ArgumentParser(description="A simple CLI tool.")
     parser.add_argument("-i", "--initdate", type=str, help="The date to download the initial json file." )
     parser.add_argument("-f", "--finaldate", type=str, help="The date to download the final json file." )
     parser.add_argument("-n", "--batchinit", type=int, default=0, help="The batch round of updates for multiple releases on the initial date.")
