@@ -28,8 +28,7 @@ def create_json_file(date, filename, batch):
             with open(local_filename, 'wb') as file:
                 # Write the file in chunks to avoid using too much memory
                 for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:  # Filter out keep-alive new chunks
-                        file.write(chunk)
+                    file.write(chunk)
     return local_filename
 
 def create_packages_list(filename):
@@ -87,10 +86,8 @@ def find_removed_packages(init_packages, final_packages):
     nevra_names_init = []
     nevra_names_final = []
 
-    for package in init_packages:
-        nevra_names_init.append(package.rsplit("-", 2)[0])
-    for package in final_packages:
-        nevra_names_final.append(package.rsplit("-", 2)[0])
+    nevra_names_init = [package.rsplit("-", 2)[0] for package in init_packages]
+    nevra_names_final = [package.rsplit("-", 2)[0] for package in final_packages]
 
     # Convert both lists to sets and find the difference
     result = list(set(nevra_names_init) - set(nevra_names_final))
@@ -117,10 +114,8 @@ def find_added_packages(init_packages, final_packages):
     nevra_names_init = []
     nevra_names_final = []
 
-    for package in init_packages:
-        nevra_names_init.append(package.rsplit("-", 2)[0])
-    for package in final_packages:
-        nevra_names_final.append(package.rsplit("-", 2)[0])
+    nevra_names_init = [package.rsplit("-", 2)[0] for package in init_packages]
+    nevra_names_final = [package.rsplit("-", 2)[0] for package in final_packages]
 
     # Convert both lists to sets and find the files only present in the final set
     result = list(set(nevra_names_final) - set(nevra_names_init))
