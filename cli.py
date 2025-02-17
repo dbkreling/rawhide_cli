@@ -62,6 +62,24 @@ def find_removed_packages(init_packages, final_packages):
 
     return
 
+def find_added_packages(init_packages, final_packages):
+    # Added packages are those present only in the final_packages
+    nevra_names_init = []
+    nevra_names_final = []
+
+    for package in init_packages:
+        nevra_names_init.append(package.rsplit("-", 2)[0])
+    for package in final_packages:
+        nevra_names_final.append(package.rsplit("-", 2)[0])
+
+    # Convert both lists to sets and find the files only present in the final set
+    result = list(set(nevra_names_final) - set(nevra_names_init))
+
+    for nevra_name in result:
+        for package_name in init_packages:
+            if nevra_name in package_name:
+                print(f'{nevra_name} ADDED ({package_name})')
+
     return
 
 
@@ -81,6 +99,7 @@ def main():
 
     find_common_packages(init_packages, final_packages)
     find_removed_packages(init_packages, final_packages)
+    find_added_packages(init_packages, final_packages)
 
 if __name__ == "__main__":
     main()
