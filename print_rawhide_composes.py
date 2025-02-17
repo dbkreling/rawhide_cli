@@ -29,10 +29,6 @@ for link in soup.find_all("a"):
 dates.pop(-1) # Removes a "Rawhide/" folder at the end of the list
 counter = Counter(dates) # Create a dictionary with the counts for each date, sorted from the highest count
 
-# print(dates)
-# print()
-# print(counter)
-
 def print_all_updates():
     print("Here's a list of Rawhide updates per day:" )
     for key,value in counter.items():
@@ -63,29 +59,6 @@ def number_of_updates_since_date(args_days):
     return
 
 
-def calculate_diff(old_date, new_date, index):
-
-    if counter.get(old_date) > 1 and index == 0: # if date has more than 1 update, give a warning and use 0
-        print(f"WARNING: {old_date} contains {counter[old_date]} updates. Using default \'--index 0\'")
-        url = (f'https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{old_date}.n.{index}/compose/metadata/rpms.json')
-        print(url)
-    elif counter.get(old_date) > 1 and index < counter.get(old_date): # if index is higher than the numbers of update
-        print(f"WARNING: {old_date} contains {counter[old_date]} updates. Using index = {index}")
-        url = (f'https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{old_date}.n.{index}/compose/metadata/rpms.json')
-        print(url)
-    elif counter.get(old_date) == 1 and index != 0: # if date has only 1 update and index is higher, exit
-        print(f"Using --index = {index}")
-        print(f"ERROR: {old_date} contains {counter[old_date]} update. Use \'--index 0\'.")
-        exit
-    else:
-        url = (f'https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{old_date}.n.{index}/compose/metadata/rpms.json')
-        print(url)
-    index = 0 # for the initial implementation, leave it as 0. TODO: implement detailed behavior when index is != 0
-
-    print(old_date, new_date, index)
-
-    return
-
 def main():
     parser = argparse.ArgumentParser(description="Manipulate metadata from Fedora's Rawhide and other time operations.")
 
@@ -98,12 +71,6 @@ def main():
     add_parser = subparsers.add_parser('calc', help='Calculate date X days before today')
     add_parser.add_argument('days', type=int, help='Number of days to find the date')
     add_parser.set_defaults(func=lambda args: calculate_past_date(args.days))
-
-    add_parser = subparsers.add_parser('diff', help='Identify the differences between two composes')
-    add_parser.add_argument('--old', required=True, type=str, help='Older date to parse.')
-    add_parser.add_argument('--new', required=True, type=str, help='Newer date to parse.')
-    add_parser.add_argument('--index', required=False, default=0, type=int, help='Zero indexed number of the update on a specific date (disabled for now).')
-    add_parser.set_defaults(func=lambda args: calculate_diff(args.old, args.new, args.index))
 
     add_parser = subparsers.add_parser('all', help='Display all Rawhide updates')
     add_parser.set_defaults(func=lambda args: print_all_updates())
