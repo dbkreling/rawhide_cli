@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 
+import os
 import argparse
 import requests
 import json
 
-def create_json_file(date, filename):
-    url = f'https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{date}.n.0/compose/metadata/rpms.json'
+def create_json_file(date, filename, batch):
+    url = f'https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{date}.n.{batch}/compose/metadata/rpms.json'
     local_filename = filename
 
-    if not local_filename:
+    if not os.path.isfile(local_filename):
+        print(f"Creating file {local_filename}")
+
         with requests.get(url, stream=True) as response:
             response.raise_for_status()  # Raises an HTTPError for bad responses (e.g., 404 or 500)
             with open(local_filename, 'wb') as file:
@@ -64,10 +67,12 @@ def main():
     parser = argparse.ArgumentParser(description="A simple CLI example.")
     parser.add_argument("-i", "--initdate", type=str, help="The date to download the initial json file." )
     parser.add_argument("-f", "--finaldate", type=str, help="The date to download the final json file." )
+    parser.add_argument("-n", "--batchinit", type=int, default=0, help="The batch round of updates for multiple releases on the initial date.")
+    parser.add_argument("-m", "--batchfinal", type=int, default=0, help="The batch round of updates for multiple releases on the final date.")
     args = parser.parse_args()
 
-    init_file = create_json_file(args.initdate, f"rpms_{args.initdate}.json")
-    final_file = create_json_file(args.finaldate, f"rpms_{args.finaldate}.json")
+    init_file = create_json_file(args.initdate, f"rpms_{args.initdate}.json", args.batchinit)
+    final_file = create_json_file(args.finaldate, f"rpms_{args.finaldate}.json", args.batchfinal)
 
     init_packages = create_packages_list(init_file)
     final_packages = create_packages_list(final_file)
