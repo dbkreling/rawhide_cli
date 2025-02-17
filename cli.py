@@ -6,6 +6,17 @@ import requests
 import json
 
 def create_json_file(date, filename, batch):
+    '''
+    Creates a local json file based on the results of the server rpms.json for a specific date and return its name.
+
+    Parameters:
+        date (str): The name of the person to greet.
+        filename (str): The name of the file to be created.
+        batch (Optional[int]): An optional update batch. If not provided, defaults to "0".
+
+    Returns:
+        str: A filename.
+    '''
     url = f'https://kojipkgs.fedoraproject.org/compose/rawhide/Fedora-Rawhide-{date}.n.{batch}/compose/metadata/rpms.json'
     local_filename = filename
 
@@ -22,6 +33,15 @@ def create_json_file(date, filename, batch):
     return local_filename
 
 def create_packages_list(filename):
+    '''
+    Returns a list containing all x86_64 packages from a specific json file.
+
+    Parameters:
+        filename (str): The name of the file to be created.
+
+    Returns:
+        List[str]: A list of packages (packages_list).
+    '''
     packages_list = []
     try:
         with open(filename, "r", encoding="utf-8") as file:
@@ -37,12 +57,32 @@ def create_packages_list(filename):
     return packages_list
 
 def find_common_packages(init_packages, final_packages):
+    '''
+    Returns a list of all x86_64 packages shared between two given packages lists.
+
+    Parameters:
+        init_packages (List[str]): list of packages from the initial date.
+        final_packages (List[str]): list of packages from the final date.
+
+    Returns:
+        List[str]: A list of common packages between two files.
+    '''
     # Convert both lists to sets and compute their intersection.
     common_packages = list(set(init_packages) & set(final_packages))
     return common_packages
 
 
 def find_removed_packages(init_packages, final_packages):
+    '''
+    Prints and returns a list of all x86_64 packages removed from an initial list provided a final one.
+
+    Parameters:
+        init_packages (List[str]): list of packages from the initial date.
+        final_packages (List[str]): list of packages from the final date.
+
+    Returns:
+        List[str]: A list of removed packages between two files.
+    '''
     # Removed packages are those present only in the init_packages
     nevra_names_init = []
     nevra_names_final = []
@@ -63,6 +103,16 @@ def find_removed_packages(init_packages, final_packages):
     return
 
 def find_added_packages(init_packages, final_packages):
+    '''
+    Prints and returns a list of all x86_64 packages added to final list provided an initial one.
+
+    Parameters:
+        init_packages (List[str]): list of packages from the initial date.
+        final_packages (List[str]): list of packages from the final date.
+
+    Returns:
+        List[str]: A list of added packages between two files.
+    '''
     # Added packages are those present only in the final_packages
     nevra_names_init = []
     nevra_names_final = []
