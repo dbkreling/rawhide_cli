@@ -133,7 +133,7 @@ def find_added_packages(init_packages, final_packages):
 
 def find_updated_packages(init_packages, final_packages):
     '''
-    Prints and returns a list of all x86_64 packages updated in the final list compared to an initial one.
+    Prints a list of all x86_64 packages removed, added and updated in the final list compared to the initial one.
 
     Parameters:
         init_packages (List[str]): list of packages from the initial date.
@@ -142,9 +142,11 @@ def find_updated_packages(init_packages, final_packages):
     Returns:
         List[str]: A list of updated packages between two files.
     '''
+    stripped_init_packages = set(init_packages) - set(find_removed_packages(init_packages, final_packages))
+    stripped_final_packages = set(final_packages) - set(find_added_packages(init_packages, final_packages))
 
-    for init in sorted(init_packages):
-        for final in sorted(final_packages):
+    for init in sorted(list(stripped_init_packages)):
+        for final in sorted(list(stripped_final_packages)):
             init_nevra_name = init.rsplit("-", 2)[0]
             final_nevra_name = final.rsplit("-", 2)[0]
             init_nevra_version = '-'.join(init.rsplit('-', 2)[1:]).rsplit('.', 2)[0]
@@ -152,6 +154,7 @@ def find_updated_packages(init_packages, final_packages):
             if init_nevra_name == final_nevra_name:
                 if init_nevra_version != final_nevra_version:
                     print(f'{init_nevra_name} UPDATED ({init_nevra_version} -> {final_nevra_version})')
+                    stripped_final_packages.remove(final)
 
     return
 
@@ -169,10 +172,8 @@ def main():
     init_packages = create_packages_list(init_file)
     final_packages = create_packages_list(final_file)
 
-    find_common_packages(init_packages, final_packages)
-    find_removed_packages(init_packages, final_packages)
-    find_added_packages(init_packages, final_packages)
-    updated = find_updated_packages(init_packages, final_packages)
+    find_updated_packages(init_packages, final_packages)
+
 
 if __name__ == "__main__":
     main()
