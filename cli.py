@@ -85,6 +85,7 @@ def find_removed_packages(init_packages, final_packages):
     # Removed packages are those present only in the init_packages
     nevra_names_init = []
     nevra_names_final = []
+    removed_packages = []
 
     nevra_names_init = [package.rsplit("-", 2)[0] for package in init_packages]
     nevra_names_final = [package.rsplit("-", 2)[0] for package in final_packages]
@@ -95,9 +96,10 @@ def find_removed_packages(init_packages, final_packages):
     for nevra_name in result:
         for package_name in init_packages:
             if nevra_name in package_name:
+                removed_packages.append(package_name)
                 print(f'{nevra_name} REMOVED ({package_name})')
 
-    return
+    return removed_packages
 
 def find_added_packages(init_packages, final_packages):
     '''
@@ -113,6 +115,7 @@ def find_added_packages(init_packages, final_packages):
     # Added packages are those present only in the final_packages
     nevra_names_init = []
     nevra_names_final = []
+    added_packages = []
 
     nevra_names_init = [package.rsplit("-", 2)[0] for package in init_packages]
     nevra_names_final = [package.rsplit("-", 2)[0] for package in final_packages]
@@ -123,9 +126,11 @@ def find_added_packages(init_packages, final_packages):
     for nevra_name in result:
         for package_name in init_packages:
             if nevra_name in package_name:
+                added_packages.append(package_name)
                 print(f'{nevra_name} ADDED ({package_name})')
 
-    return
+    return added_packages
+
 def find_updated_packages(init_packages, final_packages):
     '''
     Prints and returns a list of all x86_64 packages updated in the final list compared to an initial one.
