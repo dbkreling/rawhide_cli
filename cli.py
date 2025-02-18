@@ -126,7 +126,29 @@ def find_added_packages(init_packages, final_packages):
                 print(f'{nevra_name} ADDED ({package_name})')
 
     return
+def find_updated_packages(init_packages, final_packages):
+    '''
+    Prints and returns a list of all x86_64 packages updated in the final list compared to an initial one.
 
+    Parameters:
+        init_packages (List[str]): list of packages from the initial date.
+        final_packages (List[str]): list of packages from the final date.
+
+    Returns:
+        List[str]: A list of updated packages between two files.
+    '''
+
+    for init in sorted(init_packages):
+        for final in sorted(final_packages):
+            init_nevra_name = init.rsplit("-", 2)[0]
+            final_nevra_name = final.rsplit("-", 2)[0]
+            init_nevra_version = '-'.join(init.rsplit('-', 2)[1:]).rsplit('.', 2)[0]
+            final_nevra_version = '-'.join(final.rsplit('-', 2)[1:]).rsplit('.', 2)[0]
+            if init_nevra_name == final_nevra_name:
+                if init_nevra_version != final_nevra_version:
+                    print(f'{init_nevra_name} UPDATED ({init_nevra_version} -> {final_nevra_version})')
+
+    return
 
 def main():
     parser = argparse.ArgumentParser(description="A simple CLI tool.")
@@ -145,6 +167,7 @@ def main():
     find_common_packages(init_packages, final_packages)
     find_removed_packages(init_packages, final_packages)
     find_added_packages(init_packages, final_packages)
+    updated = find_updated_packages(init_packages, final_packages)
 
 if __name__ == "__main__":
     main()
